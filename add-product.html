@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إضافة منتج جديد - حرير</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #8b5e3c;
+            --secondary-color: #5d4037;
+            --accent-color: #d4a574;
+            --light-color: #f9f5f0;
+        }
+        
+        * {
+            font-family: 'Segoe UI', 'Tahoma', Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-color);
+            color: #333;
+            padding-top: 20px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(139, 94, 60, 0.2);
+        }
+        
+        .header h1 {
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        .header .back-btn {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+        
+        .header .back-btn:hover {
+            color: var(--accent-color);
+            transform: translateX(-5px);
+        }
+        
+        .form-container {
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .form-section:last-child {
+            border-bottom: none;
+        }
+        
+        .form-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form-section h3 i {
+            color: var(--accent-color);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .form-control, .form-select {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 12px 15px;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(139, 94, 60, 0.25);
+        }
+        
+        .form-control.is-invalid {
+            border-color: #dc3545;
+        }
+        
+        .invalid-feedback {
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        
+        .subcategory-container {
+            margin-top: 15px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .subcategory-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .subcategory-option {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: white;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .subcategory-option:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .subcategory-option.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .subcategory-option i {
+            font-size: 0.9rem;
+        }
+        
+        .custom-subcategory {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px dashed #ddd;
+        }
+        
+        .image-preview {
+            margin-top: 15px;
+            border: 3px dashed #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #fafafa;
+            transition: all 0.3s;
+        }
+        
+        .image-preview:hover {
+            border-color: var(--primary-color);
+        }
+        
+        .image-preview img {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .image-preview .placeholder {
+            text-align: center;
+            color: #999;
+        }
+        
+        .image-preview .placeholder i {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            color: #ddd;
+        }
+        
+        .color-preview {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .color-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: #f8f9fa;
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .color-circle {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .remove-color {
+            background: none;
+            border: none;
+            color: #dc3545;
+            cursor: pointer;
+            padding: 2px 5px;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        
+        .remove-color:hover {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .preview-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            position: sticky;
+            top: 20px;
+        }
+        
+        .preview-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .preview-product {
+            text-align: center;
+        }
+        
+        .preview-product img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .preview-product h4 {
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+        
+        .preview-product .price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .preview-product .old-price {
+            text-decoration: line-through;
+            color: #999;
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .preview-product .discount {
+            background-color: #dc3545;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-right: 10px;
+        }
+        
+        .preview-product .new-badge {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            display: inline-block;
+        }
+        
+        .preview-product .category {
+            display: inline-block;
+            background-color: #f0f0f0;
+            color: #666;
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .preview-product .subcategory {
+            display: block;
+            color: #888;
+            font-size: 0.85rem;
+            margin-top: 5px;
+        }
+        
+        .btn-custom {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+        }
+        
+        .btn-custom:hover {
+            background-color: var(--secondary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 94, 60, 0.3);
+        }
+        
+        .btn-custom:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .alert-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            min-width: 300px;
+            max-width: 500px;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .progress-bar {
+            height: 5px;
+            background-color: var(--primary-color);
+            width: 0%;
+            transition: width 0.3s;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 20px;
+            }
+            
+            .preview-card {
+                position: static;
+                margin-top: 30px;
+            }
+            
+            .subcategory-option {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <a href="dashboard.html" class="back-btn">
+                        <i class="fas fa-arrow-right me-2"></i> العودة للوحة التحكم
+                    </a>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <h1><i class="fas fa-plus-circle me-2"></i> إضافة منتج جديد</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Form Column -->
+            <div class="col-lg-8">
+                <div class="form-container">
+                    <form id="productForm">
+                        <!-- المعلومات الأساسية -->
+                        <div class="form-section">
+                            <h3><i class="fas fa-info-circle"></i> المعلومات الأساسية</h3>
+                            
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label for="productName">اسم المنتج *</label>
+                                        <input type="text" id="productName" class="form-control" 
+                                               placeholder="أدخل اسم المنتج بالكامل" required>
+                                        <div class="invalid-feedback">يرجى إدخال اسم المنتج</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="productPrice">السعر (دينار) *</label>
+                                        <input type="number" id="productPrice" class="form-control" 
+                                               min="0" step="0.01" placeholder="0.00" required>
+                                        <div class="invalid-feedback">يرجى إدخال سعر صحيح</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="productCategory">الفئة الرئيسية *</label>
+                                        <select id="productCategory" class="form-select" required onchange="updateSubcategories()">
+                                            <option value="">اختر الفئة الرئيسية</option>
+                                            <option value="tuka">التقى (أكسسوارات شعر)</option>
+                                            <option value="samah">السماح (شالات وأوشحة)</option>
+                                            <option value="accessories">إكسسوارات أخرى</option>
+                                        </select>
+                                        <div class="invalid-feedback">يرجى اختيار الفئة الرئيسية</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="productDiscount">الخصم (%)</label>
+                                        <input type="number" id="productDiscount" class="form-control" 
+                                               min="0" max="100" value="0" placeholder="0">
+                                        <small class="text-muted">اتركه 0 إذا لم يكن هناك خصم</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- التصنيفات الفرعية (تظهر تلقائياً حسب الفئة) -->
+                        <div class="form-section">
+                            <h3><i class="fas fa-tags"></i> التصنيفات الفرعية</h3>
+                            
+                            <div id="subcategoryContainer">
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    اختر الفئة الرئيسية أولاً لعرض التصنيفات الفرعية المناسبة
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- الوصف -->
+                        <div class="form-section">
+                            <h3><i class="fas fa-align-left"></i> الوصف</h3>
+                            <div class="form-group">
+                                <label for="productDescription">وصف المنتج</label>
+                                <textarea id="productDescription" class="form-control" rows="4" 
+                                          placeholder="أدخل وصفاً مفصلاً للمنتج..."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- الصورة -->
+                        <div class="form-section">
+                            <h3><i class="fas fa-image"></i> الصورة</h3>
+                            <div class="form-group">
+                                <label for="productImage">رابط الصورة *</label>
+                                <div class="input-group">
+                                    <input type="url" id="productImage" class="form-control" 
+                                           placeholder="https://example.com/image.jpg" required>
+                                    <button class="btn btn-outline-secondary" type="button" 
+                                            onclick="testImage()">
+                                        <i class="fas fa-check"></i> اختبار
+                                    </button>
+                                </div>
+                                <div class="invalid-feedback">يرجى إدخال رابط صحيح للصورة</div>
+                                <small class="text-muted">
+                                    يمكنك رفع الصورة على 
+                                    <a href="https://imgbb.com/" target="_blank" class="text-primary">
+                                        ImgBB
+                                    </a> 
+                                    ثم نسخ رابط الصورة المباشر
+                                </small>
+                                
+                                <div class="progress-bar" id="imageProgress"></div>
+                            </div>
+                            
+                            <div class="image-preview" id="imagePreview">
+                                <div class="placeholder">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <p>معاينة الصورة ستظهر هنا</p>
+                                    <small class="text-muted">بعد إدخال رابط الصورة</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- الألوان -->
+                        <div class="form-section">
+                            <h3><i class="fas fa-palette"></i> الألوان المتاحة</h3>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="text" id="colorInput" class="form-control" 
+                                           placeholder="أدخل لون (مثال: أحمر، أزرق، إلخ)">
+                                    <button class="btn btn-outline-primary" type="button" 
+                                            onclick="addColor()">
+                                        <i class="fas fa-plus"></i> إضافة
+                                    </button>
+                                </div>
+                                <small class="text-muted">اضغط Enter أو زر الإضافة لإدخال اللون</small>
+                            </div>
+                            
+                            <div class="color-preview" id="colorsPreview">
+                                <!-- الألوان ستظهر هنا -->
+                            </div>
+                            <input type="hidden" id="productColors" value="[]">
+                        </div>
+
+                        <!-- خيارات إضافية -->
+                        <div class="form-section">
+                            <h3><i class="fas fa-cog"></i> خيارات إضافية</h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" id="isNewProduct">
+                                        <label class="form-check-label" for="isNewProduct">
+                                            <i class="fas fa-star me-2"></i> وضع علامة "جديد" على المنتج
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" id="isFeaturedProduct">
+                                        <label class="form-check-label" for="isFeaturedProduct">
+                                            <i class="fas fa-fire me-2"></i> عرض في القسم المميز
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- زر الحفظ -->
+                        <div class="form-section">
+                            <button type="submit" class="btn-custom" id="submitBtn">
+                                <i class="fas fa-save"></i> حفظ المنتج
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Preview Column -->
+            <div class="col-lg-4">
+                <div class="preview-card">
+                    <h3><i class="fas fa-eye me-2"></i> معاينة المنتج</h3>
+                    
+                    <div class="preview-product" id="productPreview">
+                        <div id="previewImage" class="mb-3">
+                            <div class="placeholder-image" 
+                                 style="width:100%;height:200px;background:#f0f0f0;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#999;">
+                                <i class="fas fa-image fa-3x"></i>
+                            </div>
+                        </div>
+                        
+                        <h4 id="previewName">اسم المنتج</h4>
+                        <div id="previewPrice" class="price">0.00 د.أ</div>
+                        
+                        <div class="mt-2">
+                            <span id="previewCategory" class="category">غير محدد</span>
+                            <span id="previewSubcategories" class="subcategory"></span>
+                        </div>
+                        
+                        <div class="mt-3">
+                            <div id="previewColors" style="display:none;">
+                                <small class="text-muted">الألوان المتاحة:</small>
+                                <div class="color-preview mt-2"></div>
+                            </div>
+                            
+                            <div id="previewBadges" class="mt-3"></div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <h6>تفاصيل الإضافة:</h6>
+                            <div class="row text-muted small">
+                                <div class="col-6">
+                                    <i class="fas fa-clock me-1"></i> الوقت:
+                                    <span id="previewTime">--:--</span>
+                                </div>
+                                <div class="col-6">
+                                    <i class="fas fa-calendar me-1"></i> التاريخ:
+                                    <span id="previewDate">--/--/----</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 text-center">
+                        <a href="products-page.html" class="btn btn-outline-primary w-100">
+                            <i class="fas fa-store me-2"></i> عرض في المتجر
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+        import { 
+            getFirestore, 
+            collection, 
+            addDoc,
+            serverTimestamp 
+        } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCMoFpEmsjbYPjYAl_LEX8GjC5so8kn9-Y",
+            authDomain: "harir-92e27.firebaseapp.com",
+            projectId: "harir-92e27",
+            storageBucket: "harir-92e27.firebasestorage.app",
+            messagingSenderId: "787234689138",
+            appId: "1:787234689138:web:1d91758ff0d5c1fa9f72eb",
+            measurementId: "G-T0JQMQQYZE"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Global Variables
+        let colors = [];
+        let selectedSubcategories = [];
+        let isImageValid = false;
+        
+        // تعريف التصنيفات الفرعية لكل فئة رئيسية
+        const subcategoriesData = {
+            'tuka': [
+                { 
+                    category: 'types', 
+                    name: 'أنواع التوكة', 
+                    options: [
+                        { value: 'tuka_classic', name: 'توكة كلاسيك', icon: 'fas fa-crown' },
+                        { value: 'tuka_modern', name: 'توكة مودرن', icon: 'fas fa-star' },
+                        { value: 'tuka_wedding', name: 'توكة زفاف', icon: 'fas fa-heart' },
+                        { value: 'tuka_everyday', name: 'توكة يومية', icon: 'fas fa-sun' },
+                        { value: 'tuka_special', name: 'توكة خاصة', icon: 'fas fa-gem' },
+                        { value: 'tuka_simple', name: 'توكة بسيطة', icon: 'fas fa-circle' },
+                        { value: 'tuka_decorated', name: 'توكة منقوشة', icon: 'fas fa-paint-brush' },
+                        { value: 'tuka_pearl', name: 'توكة لؤلؤ', icon: 'fas fa-gem' }
+                    ]
+                },
+               
+            ],
+            'samah': [
+                { 
+                    category: 'types', 
+                    name: 'أنواع الشالات', 
+                    options: [
+                        { value: 'scarves', name: 'شالات', icon: 'fas fa-scarf' },
+                        { value: 'shawls', name: 'أوشحة', icon: 'fas fa-scarf' },
+                        { value: 'hijab', name: 'حجاب', icon: 'fas fa-user-tie' },
+                        { value: 'wraps', name: 'لفات', icon: 'fas fa-redo' },
+                        { value: 'stoles', name: 'ستول', icon: 'fas fa-scarf' }
+                    ]
+                },
+                
+            ],
+            'accessories': [
+                { 
+                    category: 'types', 
+                    name: 'أنواع الإكسسوارات', 
+                    options: [
+                        { value: 'socks', name: 'جرابات', icon: 'fas fa-socks' },
+                        { value: 'underwear', name: 'داخليات', icon: 'fas fa-tshirt' },
+                        { value: 'jewelry', name: 'مجوهرات', icon: 'fas fa-gem' },
+                        { value: 'bags', name: 'حقائب', icon: 'fas fa-shopping-bag' },
+                        { value: 'belts', name: 'أحزمة', icon: 'fas fa-grip-lines' },
+                        { value: 'hair_accessories', name: 'إكسسوارات شعر', icon: 'fas fa-spa' },
+                        { value: 'watches', name: 'ساعات', icon: 'fas fa-clock' },
+                        { value: 'sunglasses', name: 'نظارات شمسية', icon: 'fas fa-sun' },
+                        { value: 'bracelets', name: 'أساور', icon: 'fas fa-circle' },
+                        { value: 'necklaces', name: 'قلائد', icon: 'fas fa-link' },
+                        { value: 'earrings', name: 'أقراط', icon: 'fas fa-dot-circle' },
+                        { value: 'rings', name: 'خواتم', icon: 'fas fa-ring' }
+                    ]
+                },
+                { 
+                    category: 'materials', 
+                    name: 'المواد', 
+                    options: [
+                        { value: 'silver', name: 'فضة', icon: 'fas fa-gem' },
+                        { value: 'gold', name: 'ذهب', icon: 'fas fa-crown' },
+                        { value: 'leather', name: 'جلد', icon: 'fas fa-paw' },
+                        { value: 'fabric', name: 'قُماش', icon: 'fas fa-cut' },
+                        { value: 'plastic', name: 'بلاستيك', icon: 'fas fa-vial' },
+                        { value: 'wood', name: 'خشب', icon: 'fas fa-tree' }
+                    ]
+                }
+            ]
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeForm();
+            updatePreview();
+            setupEventListeners();
+        });
+
+        function initializeForm() {
+            // Set current date/time in preview
+            const now = new Date();
+            document.getElementById('previewDate').textContent = formatDate(now);
+            document.getElementById('previewTime').textContent = formatTime(now);
+            
+            // Enable Enter key for color input
+            document.getElementById('colorInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    addColor();
+                }
+            });
+        }
+
+        function setupEventListeners() {
+            // Form submission
+            document.getElementById('productForm').addEventListener('submit', handleSubmit);
+            
+            // Real-time preview updates
+            document.getElementById('productName').addEventListener('input', updatePreview);
+            document.getElementById('productPrice').addEventListener('input', updatePreview);
+            document.getElementById('productCategory').addEventListener('change', updatePreview);
+            document.getElementById('productDiscount').addEventListener('input', updatePreview);
+            document.getElementById('productImage').addEventListener('input', updatePreview);
+            document.getElementById('isNewProduct').addEventListener('change', updatePreview);
+            document.getElementById('isFeaturedProduct').addEventListener('change', updatePreview);
+            
+            // Image validation
+            document.getElementById('productImage').addEventListener('blur', validateImage);
+            
+            // Price formatting
+            document.getElementById('productPrice').addEventListener('blur', function() {
+                if (this.value) {
+                    this.value = parseFloat(this.value).toFixed(2);
+                }
+            });
+        }
+
+        function updateSubcategories() {
+            const category = document.getElementById('productCategory').value;
+            const subcategoryContainer = document.getElementById('subcategoryContainer');
+            
+            // Clear previous selections
+            selectedSubcategories = [];
+            
+            if (category && subcategoriesData[category]) {
+                let html = '';
+                
+                // إضافة رسالة توجيهية
+                html += `
+                    <div class="alert alert-success mb-4">
+                        <i class="fas fa-check-circle me-2"></i>
+                        اختر التصنيفات الفرعية المناسبة للمنتج من القوائم التالية:
+                        <small class="d-block mt-1">(يمكنك اختيار أكثر من تصنيف)</small>
+                    </div>
+                `;
+                
+                // عرض التصنيفات الفرعية لكل مجموعة
+                subcategoriesData[category].forEach(group => {
+                    html += `
+                        <div class="subcategory-container mb-4">
+                            <h5 class="mb-3">
+                                <i class="${group.options[0]?.icon || 'fas fa-tag'} me-2"></i>
+                                ${group.name}
+                            </h5>
+                            <div class="subcategory-options">
+                    `;
+                    
+                    group.options.forEach(option => {
+                        const isActive = selectedSubcategories.includes(option.value);
+                        html += `
+                            <div class="subcategory-option ${isActive ? 'active' : ''}" 
+                                 onclick="toggleSubcategory('${option.value}')"
+                                 title="${option.name}">
+                                <i class="${option.icon}"></i>
+                                ${option.name}
+                            </div>
+                        `;
+                    });
+                    
+                    html += `
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                // إضافة حقل التصنيف المخصص
+                html += `
+                    <div class="custom-subcategory">
+                        <h5 class="mb-3">
+                            <i class="fas fa-plus-circle me-2"></i>
+                            إضافة تصنيف مخصص
+                        </h5>
+                        <div class="input-group">
+                            <input type="text" id="customSubcategory" class="form-control" 
+                                   placeholder="أدخل تصنيفاً جديداً (مثال: شتوي 2024)">
+                            <button class="btn btn-outline-primary" type="button" onclick="addCustomSubcategory()">
+                                <i class="fas fa-plus"></i> إضافة
+                            </button>
+                        </div>
+                        <small class="text-muted mt-2 d-block">
+                            يمكنك إضافة تصنيفات جديدة خاصة بك
+                        </small>
+                    </div>
+                `;
+                
+                subcategoryContainer.innerHTML = html;
+                
+            } else {
+                subcategoryContainer.innerHTML = `
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        اختر الفئة الرئيسية أولاً لعرض التصنيفات الفرعية المناسبة
+                    </div>
+                `;
+            }
+            
+            updatePreview();
+        }
+
+        function toggleSubcategory(subcategoryValue) {
+            if (selectedSubcategories.includes(subcategoryValue)) {
+                // إزالة التصنيف
+                selectedSubcategories = selectedSubcategories.filter(cat => cat !== subcategoryValue);
+            } else {
+                // إضافة التصنيف
+                selectedSubcategories.push(subcategoryValue);
+            }
+            
+            // تحديث الواجهة
+            const optionElement = document.querySelector(`[onclick="toggleSubcategory('${subcategoryValue}')"]`);
+            if (optionElement) {
+                optionElement.classList.toggle('active');
+            }
+            
+            updatePreview();
+        }
+
+        function addCustomSubcategory() {
+            const customSubcategoryInput = document.getElementById('customSubcategory');
+            const subcategoryName = customSubcategoryInput.value.trim();
+            
+            if (!subcategoryName) {
+                showNotification('يرجى إدخال اسم التصنيف', 'warning');
+                return;
+            }
+            
+            // إنشاء معرف للتصنيف المخصص
+            const customId = 'custom_' + Date.now();
+            
+            // إضافة التصنيف المخصص للقائمة
+            const category = document.getElementById('productCategory').value;
+            if (category) {
+                // التحقق إذا كان التصنيف موجوداً مسبقاً
+                const exists = selectedSubcategories.some(cat => {
+                    const optionElement = document.querySelector(`[onclick="toggleSubcategory('${cat}')"]`);
+                    return optionElement && optionElement.textContent.includes(subcategoryName);
+                });
+                
+                if (!exists) {
+                    // إضافة التصنيف الجديد
+                    selectedSubcategories.push(customId);
+                    
+                    // إضافة زر للتصنيف الجديد
+                    const categoryContainer = document.querySelector('.subcategory-options');
+                    if (categoryContainer) {
+                        const newOption = document.createElement('div');
+                        newOption.className = 'subcategory-option active';
+                        newOption.setAttribute('onclick', `toggleSubcategory('${customId}')`);
+                        newOption.innerHTML = `<i class="fas fa-plus-circle"></i> ${subcategoryName}`;
+                        categoryContainer.appendChild(newOption);
+                    }
+                    
+                    showNotification('تم إضافة التصنيف الجديد', 'success');
+                } else {
+                    showNotification('هذا التصنيف موجود مسبقاً', 'warning');
+                }
+            }
+            
+            // إعادة تعيين حقل الإدخال
+            customSubcategoryInput.value = '';
+            updatePreview();
+        }
+
+        function updatePreview() {
+            // Update name
+            const name = document.getElementById('productName').value || 'اسم المنتج';
+            document.getElementById('previewName').textContent = name;
+            
+            // Update price
+            const price = parseFloat(document.getElementById('productPrice').value) || 0;
+            const discount = parseInt(document.getElementById('productDiscount').value) || 0;
+            let finalPrice = price;
+            
+            if (discount > 0) {
+                finalPrice = price - (price * discount / 100);
+                document.getElementById('previewPrice').innerHTML = `
+                    <span class="old-price">${price.toFixed(2)} د.أ</span>
+                    <span class="price">${finalPrice.toFixed(2)} د.أ</span>
+                `;
+            } else {
+                document.getElementById('previewPrice').innerHTML = `
+                    <span class="price">${price.toFixed(2)} د.أ</span>
+                `;
+            }
+            
+            // Update main category
+            const category = document.getElementById('productCategory').value;
+            const categoryNames = {
+                'tuka': 'التقى',
+                'samah': 'السماح',
+                'accessories': 'إكسسوارات'
+            };
+            document.getElementById('previewCategory').textContent = categoryNames[category] || 'غير محدد';
+            
+            // Update subcategories
+            const previewSubcategories = document.getElementById('previewSubcategories');
+            if (selectedSubcategories.length > 0) {
+                let subcategoriesText = selectedSubcategories.map(cat => {
+                    // البحث عن اسم التصنيف
+                    const optionElement = document.querySelector(`[onclick="toggleSubcategory('${cat}')"]`);
+                    if (optionElement) {
+                        return optionElement.textContent.trim();
+                    }
+                    return cat;
+                }).join(' • ');
+                
+                previewSubcategories.innerHTML = ` | ${subcategoriesText}`;
+                previewSubcategories.style.display = 'inline';
+            } else {
+                previewSubcategories.innerHTML = '';
+                previewSubcategories.style.display = 'none';
+            }
+            
+            // Update image
+            const imageUrl = document.getElementById('productImage').value;
+            const previewImage = document.getElementById('previewImage');
+            
+            if (imageUrl && isValidUrl(imageUrl)) {
+                previewImage.innerHTML = `
+                    <img src="${imageUrl}" 
+                         alt="${name}" 
+                         style="width:100%;height:200px;object-fit:cover;border-radius:10px;"
+                         onerror="this.onerror=null; this.src='data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"300\" height=\"200\" viewBox=\"0 0 300 200\"><rect width=\"300\" height=\"200\" fill=\"%23f0f0f0\"/><text x=\"150\" y=\"100\" font-family=\"Arial\" font-size=\"14\" fill=\"%23999\" text-anchor=\"middle\">خطأ في تحميل الصورة</text></svg>'">
+                `;
+            }
+            
+            // Update colors
+            const colorsContainer = document.querySelector('#previewColors .color-preview');
+            if (colors.length > 0) {
+                document.getElementById('previewColors').style.display = 'block';
+                colorsContainer.innerHTML = colors.map(color => `
+                    <span class="color-item">
+                        <div class="color-circle" style="background-color: ${getColorCode(color)}"></div>
+                        <span>${color}</span>
+                    </span>
+                `).join('');
+            } else {
+                document.getElementById('previewColors').style.display = 'none';
+            }
+            
+            // Update badges
+            const badgesContainer = document.getElementById('previewBadges');
+            let badges = [];
+            
+            if (discount > 0) {
+                badges.push(`<span class="discount">خصم ${discount}%</span>`);
+            }
+            
+            if (document.getElementById('isNewProduct').checked) {
+                badges.push(`<span class="new-badge">جديد</span>`);
+            }
+            
+            if (document.getElementById('isFeaturedProduct').checked) {
+                badges.push(`<span class="badge bg-warning text-dark">مميز</span>`);
+            }
+            
+            badgesContainer.innerHTML = badges.join(' ');
+        }
+
+        async function handleSubmit(e) {
+            e.preventDefault();
+            
+            const form = e.target;
+            const submitBtn = document.getElementById('submitBtn');
+            const originalBtnText = submitBtn.innerHTML;
+            
+            // Validate form
+            if (!validateForm()) {
+                return;
+            }
+            
+            // Show loading state
+            submitBtn.innerHTML = '<span class="loading-spinner"></span> جاري الحفظ...';
+            submitBtn.disabled = true;
+            
+            try {
+                // Prepare product data
+                const productData = {
+                    name: document.getElementById('productName').value.trim(),
+                    price: parseFloat(document.getElementById('productPrice').value),
+                    category: document.getElementById('productCategory').value,
+                    subcategories: selectedSubcategories,
+                    discount: parseInt(document.getElementById('productDiscount').value) || 0,
+                    description: document.getElementById('productDescription').value.trim() || '',
+                    imageUrl: document.getElementById('productImage').value.trim(),
+                    colors: colors,
+                    isNew: document.getElementById('isNewProduct').checked,
+                    isFeatured: document.getElementById('isFeaturedProduct').checked,
+                    createdAt: serverTimestamp(),
+                    updatedAt: serverTimestamp(),
+                    views: 0,
+                    sales: 0
+                };
+                
+                // Add to Firestore
+                const docRef = await addDoc(collection(db, 'products'), productData);
+                
+                // Show success message
+                showNotification('تم إضافة المنتج بنجاح!', 'success');
+                
+                // Reset form after 2 seconds
+                setTimeout(() => {
+                    resetForm();
+                    submitBtn.innerHTML = originalBtnText;
+                    submitBtn.disabled = false;
+                    
+                    // Redirect to dashboard after 3 seconds
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html?added=true';
+                    }, 3000);
+                    
+                }, 2000);
+                
+            } catch (error) {
+                console.error('Error adding product:', error);
+                showNotification('حدث خطأ في إضافة المنتج: ' + error.message, 'danger');
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+            }
+        }
+
+        function validateForm() {
+            let isValid = true;
+            
+            // Validate name
+            const name = document.getElementById('productName');
+            if (!name.value.trim()) {
+                name.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                name.classList.remove('is-invalid');
+            }
+            
+            // Validate price
+            const price = document.getElementById('productPrice');
+            if (!price.value || parseFloat(price.value) <= 0) {
+                price.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                price.classList.remove('is-invalid');
+            }
+            
+            // Validate category
+            const category = document.getElementById('productCategory');
+            if (!category.value) {
+                category.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                category.classList.remove('is-invalid');
+            }
+            
+            // Validate image
+            const image = document.getElementById('productImage');
+            if (!image.value.trim() || !isValidUrl(image.value)) {
+                image.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                image.classList.remove('is-invalid');
+            }
+            
+            return isValid;
+        }
+
+        function validateImage() {
+            const imageUrl = document.getElementById('productImage').value;
+            const progressBar = document.getElementById('imageProgress');
+            
+            if (!imageUrl) {
+                progressBar.style.width = '0%';
+                return false;
+            }
+            
+            if (!isValidUrl(imageUrl)) {
+                progressBar.style.width = '100%';
+                progressBar.style.backgroundColor = '#dc3545';
+                showNotification('رابط الصورة غير صحيح', 'warning');
+                return false;
+            }
+            
+            // Simulate loading
+            progressBar.style.width = '50%';
+            progressBar.style.backgroundColor = '#ffc107';
+            
+            // Test image loading
+            const img = new Image();
+            img.onload = function() {
+                progressBar.style.width = '100%';
+                progressBar.style.backgroundColor = '#28a745';
+                isImageValid = true;
+                showNotification('الصورة صالحة', 'success');
+                updatePreview();
+            };
+            
+            img.onerror = function() {
+                progressBar.style.width = '100%';
+                progressBar.style.backgroundColor = '#dc3545';
+                isImageValid = false;
+                showNotification('لا يمكن تحميل الصورة من هذا الرابط', 'danger');
+            };
+            
+            img.src = imageUrl;
+        }
+
+        function testImage() {
+            validateImage();
+        }
+
+        function addColor() {
+            const colorInput = document.getElementById('colorInput');
+            const color = colorInput.value.trim();
+            
+            if (!color) {
+                showNotification('يرجى إدخال لون', 'warning');
+                return;
+            }
+            
+            if (colors.includes(color)) {
+                showNotification('هذا اللون مضاف بالفعل', 'warning');
+                return;
+            }
+            
+            // Add color
+            colors.push(color);
+            updateColorsPreview();
+            
+            // Clear input
+            colorInput.value = '';
+            colorInput.focus();
+            
+            // Update preview
+            updatePreview();
+        }
+
+        function updateColorsPreview() {
+            const colorsPreview = document.getElementById('colorsPreview');
+            const colorsInput = document.getElementById('productColors');
+            
+            colorsPreview.innerHTML = colors.map(color => `
+                <div class="color-item">
+                    <div class="color-circle" style="background-color: ${getColorCode(color)}"></div>
+                    <span>${color}</span>
+                    <button type="button" class="remove-color" onclick="removeColor('${color}')">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `).join('');
+            
+            // Update hidden input
+            colorsInput.value = JSON.stringify(colors);
+        }
+
+        function removeColor(colorToRemove) {
+            colors = colors.filter(color => color !== colorToRemove);
+            updateColorsPreview();
+            updatePreview();
+        }
+
+        function resetForm() {
+            // Reset form fields
+            document.getElementById('productForm').reset();
+            document.getElementById('productDiscount').value = 0;
+            colors = [];
+            selectedSubcategories = [];
+            updateColorsPreview();
+            
+            // Reset subcategories container
+            document.getElementById('subcategoryContainer').innerHTML = `
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    اختر الفئة الرئيسية أولاً لعرض التصنيفات الفرعية المناسبة
+                </div>
+            `;
+            
+            // Reset preview
+            document.getElementById('previewImage').innerHTML = `
+                <div class="placeholder-image" 
+                     style="width:100%;height:200px;background:#f0f0f0;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#999;">
+                    <i class="fas fa-image fa-3x"></i>
+                </div>
+            `;
+            
+            document.getElementById('previewName').textContent = 'اسم المنتج';
+            document.getElementById('previewPrice').innerHTML = '<span class="price">0.00 د.أ</span>';
+            document.getElementById('previewCategory').textContent = 'غير محدد';
+            document.getElementById('previewSubcategories').textContent = '';
+            document.getElementById('previewSubcategories').style.display = 'none';
+            document.getElementById('previewColors').style.display = 'none';
+            document.getElementById('previewBadges').innerHTML = '';
+            
+            // Reset image progress
+            document.getElementById('imageProgress').style.width = '0%';
+            document.getElementById('imageProgress').style.backgroundColor = '';
+        }
+
+        function isValidUrl(string) {
+            try {
+                new URL(string);
+                return true;
+            } catch (_) {
+                return false;
+            }
+        }
+
+        function getColorCode(colorName) {
+            const colorMap = {
+                'أحمر': '#dc3545',
+                'أزرق': '#0d6efd',
+                'أخضر': '#198754',
+                'أصفر': '#ffc107',
+                'أسود': '#212529',
+                'أبيض': '#f8f9fa',
+                'وردي': '#e83e8c',
+                'بنفسجي': '#6f42c1',
+                'برتقالي': '#fd7e14',
+                'بني': '#795548',
+                'رمادي': '#6c757d',
+                'ذهبي': '#ffd700',
+                'فضي': '#c0c0c0',
+                'كريم': '#fffdd0',
+                'بيج': '#f5f5dc',
+                'سماوي': '#87ceeb',
+                'نيلي': '#4b0082'
+            };
+            
+            return colorMap[colorName] || '#6c757d';
+        }
+
+        function formatDate(date) {
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}/${month}/${year}`;
+        }
+
+        function formatTime(date) {
+            const hours = date.getHours().toString().padStart(2, '0');
+            const minutes = date.getMinutes().toString().padStart(2, '0');
+            return `${hours}:${minutes}`;
+        }
+
+        function showNotification(message, type) {
+            // Remove existing notifications
+            const existingAlerts = document.querySelectorAll('.alert-notification');
+            existingAlerts.forEach(alert => alert.remove());
+            
+            // Create notification
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-notification alert-dismissible`;
+            alertDiv.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'} me-3 fs-4"></i>
+                    <div class="flex-grow-1">${message}</div>
+                    <button type="button" class="btn-close" onclick="this.parentElement.parentElement.remove()"></button>
+                </div>
+            `;
+            
+            document.body.appendChild(alertDiv);
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (alertDiv.parentNode) {
+                    alertDiv.remove();
+                }
+            }, 5000);
+        }
+
+        // Make functions available globally
+        window.addColor = addColor;
+        window.removeColor = removeColor;
+        window.testImage = validateImage;
+        window.showNotification = showNotification;
+        window.updateSubcategories = updateSubcategories;
+        window.toggleSubcategory = toggleSubcategory;
+        window.addCustomSubcategory = addCustomSubcategory;
+    </script>
+</body>
+</html>
