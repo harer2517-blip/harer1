@@ -71,21 +71,73 @@
 /* Stores Grid */
 .stores-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+}
+
+/* للشاشات الصغيرة (الجوال) */
+@media (max-width: 768px) {
+    .stores-grid {
+        grid-template-columns: repeat(2, 1fr); /* اثنان جنبًا إلى جنب */
+        gap: var(--spacing-md);
+    }
+    
+    /* تصغير حجم البطاقات للجوال */
+    .store-card {
+        min-height: auto;
+    }
+    
+    .store-icon {
+        width: 100px; /* تصغير الأيقونة للجوال */
+        height: 100px;
+        font-size: 1.2rem;
+    }
+    
+    .store-title h3 {
+        font-size: 1.2rem;
+    }
+}
+
+/* للشاشات الصغيرة جدًا */
+@media (max-width: 480px) {
+    .stores-grid {
+        grid-template-columns: 1fr; /* عمود واحد فقط */
+        gap: var(--spacing-sm);
+    }
+}
+
+.stores-grid {
+    display: flex;
+    flex-wrap: wrap;
     gap: var(--spacing-lg);
     margin-bottom: var(--spacing-xl);
 }
 
 .store-card {
+    flex: 1 1 300px; /* مرن يبدأ من 300px */
     background: var(--light-color);
     border-radius: var(--border-radius-lg);
     overflow: hidden;
     box-shadow: var(--shadow-lg);
     transition: var(--transition-medium);
     border: 1px solid rgba(87, 28, 36, 0.1);
-    position: relative;
 }
 
+/* للجوال */
+@media (max-width: 768px) {
+    .store-card {
+        flex: 1 1 calc(25% - 10px); /* 50% مع حساب المسافة */
+        min-width: 25%; /* الحد الأدنى 45% */
+    }
+}
+
+/* للشاشات الصغيرة جدًا */
+@media (max-width: 480px) {
+    .store-card {
+        flex: 1 1 100%; /* عمود كامل */
+    }
+}
 .store-card:hover {
     transform: translateY(-10px);
     box-shadow: var(--shadow-hover);
